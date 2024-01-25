@@ -9,7 +9,7 @@ rm(list = ls())
 library(ciftiTools)
 ciftiTools.setOption('wb_path', '/usr/local/workbench')
 library(irlba)
-source("00_utils.R")
+source("../../Simulations/00_utils.R")
 
 subj_list = read.csv("../Data/ICA_subjlist_combine.csv")
 

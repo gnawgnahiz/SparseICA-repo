@@ -9,7 +9,7 @@ library(fastICA)
 library(irlba)
 library(SparseICA)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 #################################################################################################
 # For three given SNR, compare PMSE of S and M

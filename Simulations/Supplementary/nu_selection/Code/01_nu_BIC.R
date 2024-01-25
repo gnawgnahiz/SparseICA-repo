@@ -7,7 +7,7 @@ rm(list = ls())
 
 library(SparseICA)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 #################################################################################################
 # make BIC plot for single-subject spatio-temporal simulations

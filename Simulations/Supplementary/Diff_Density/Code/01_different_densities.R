@@ -8,7 +8,7 @@ library(ProDenICA)
 library(steadyICA)
 library(fastICA)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 ################################################################################################
 ### Can use letters a-r below for dist

@@ -10,7 +10,7 @@ library(fastICA)
 library(irlba)
 library(R.matlab)
 
-source("00_utils.R")
+source("../../00_utils.R")
 source("00_utils_group.R")
 
 ###################################################################

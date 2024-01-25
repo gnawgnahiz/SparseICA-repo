@@ -11,7 +11,7 @@ library(irlba)
 library(SparseICA)
 library(R.matlab)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 ###################################################################
 # General simulations settings

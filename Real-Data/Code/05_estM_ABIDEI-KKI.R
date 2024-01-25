@@ -10,7 +10,7 @@ library(oro.nifti)
 library(neurobase)
 library(ciftiTools)
 ciftiTools.setOption('wb_path', '/usr/local/workbench')
-source("00_utils.R")
+source("../../Simulations/00_utils.R")
 
 load("../Results/group_sparseICA.RData")
 

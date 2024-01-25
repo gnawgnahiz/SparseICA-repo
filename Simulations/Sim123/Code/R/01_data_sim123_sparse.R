@@ -5,13 +5,13 @@
 
 rm(list = ls())
 
-# library(SparseICA)
+library(SparseICA)
 # library(steadyICA)
 # library(fastICA)
 # library(irlba)
 library(R.matlab)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 ###################################################################
 # General simulations settings

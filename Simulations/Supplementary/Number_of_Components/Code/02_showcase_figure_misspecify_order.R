@@ -11,7 +11,7 @@ library(reshape2)
 library(colorspace)
 library(ggpubr)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 ###################################################################
 # make plots for mis-specifying the number of ICs

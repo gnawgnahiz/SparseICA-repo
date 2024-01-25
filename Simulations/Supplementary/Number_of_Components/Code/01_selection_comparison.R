@@ -7,11 +7,11 @@ rm(list = ls())
 # library(fastICA)
 # library(irlba)
 # #library(R.matlab)
-# library(SparseICA)
+library(SparseICA)
 library(pesel)
 #library(fMRItools)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 source("minka.R")
 
 # formula for MDL method

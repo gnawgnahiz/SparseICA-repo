@@ -9,7 +9,7 @@ library(steadyICA)
 library(fastICA)
 library(R.matlab)
 library(ciftiTools)
-source("00_utils.R")
+source("../../../00_utils.R")
 
 # ciftiTools package requires users using the following codes to point to the path to workbench
 # For Mac

@@ -9,7 +9,7 @@ library(SparseICA)
 library(mltools)
 library(MLmetrics)
 
-source("00_utils.R")
+source("../../../00_utils.R")
 
 ##############################################################################################
 # sim123 low SNR
