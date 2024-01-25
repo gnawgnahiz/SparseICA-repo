@@ -23,17 +23,17 @@ if(!require(c("Rcpp","RcppArmadillo","MASS","irlba","clue","devtools"))){
 }
 ```
 
-For the purpose of replication of the results in the paper, you can install the `SparseICA` R package from the provided `SparseICA_0.1.0.tar.gz`:
+For the purpose of replication of the results in the paper, you can download the provided `SparseICA_0.1.0.tar.gz` to your computer and then install it with:
 
 ```r
-install.packages("SparseICA_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("SparseICA_0.1.0.tar.gz")
 ```
 
 In the future, you can install Sparse ICA from github with:
 
 ``` r
 library(devtools)
-install_github("xxx/SparseICA")
+install_github("XXXX/SparseICA")
 ```
 Please raise the issue on GitHub if something breaks.
 
