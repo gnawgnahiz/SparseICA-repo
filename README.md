@@ -1,10 +1,10 @@
 # Sparse ICA - repository
 
-Sparse ICA (Sparse Independent Component Analysis) is a novel ICA method that enables sparse estimation of independent source components.
+This repository contains the code for replication of the results in the paper "Sparse Independent Component Analysis with an Application to Cortical Surface fMRI Data in Autism". It also contains an R package implementing the Sparse ICA algorithm. Sparse ICA (Sparse Independent Component Analysis) is a novel ICA method that enables sparse estimation of independent source components.
 
-## Installation
+## Installation of Sparse ICA R package
 
-We assume you are running R 4.1.0 or newer. There is no guarantee for backward or forward comparability. Please raise the issue on GitHub if something breaks.
+We assume you are running R 4.1.0 or newer. There is no guarantee for backward or forward comparability. 
 
 The following R packages are required:
 
@@ -23,14 +23,21 @@ if(!require(c("Rcpp","RcppArmadillo","MASS","irlba","clue","devtools"))){
 }
 ```
 
-Then you can install Sparse ICA from github with:
+For the purpose of replication of the results in the paper, you can install the `SparseICA` R package from the provided `SparseICA_0.1.0.tar.gz`:
+
+```r
+install.packages("SparseICA_0.1.0.tar.gz", repos = NULL, type = "source")
+```
+
+In the future, you can install Sparse ICA from github with:
 
 ``` r
 library(devtools)
-install_github("thebrisklab/SparseICA")
+install_github("xxx/SparseICA")
 # Load the package
 library(SparseICA)
 ```
+Please raise the issue on GitHub if something breaks.
 
 ## Tutorial
 
