@@ -48,8 +48,26 @@ The folder `Simulations` contains the code for the simulation studies in the pap
 - `Figures`: The figures showing the simulation results.
 - `Results`: The results of simulations.
 
+#### HighDim
+- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject high-dimensional simulations, under both sparse and non-sparse truth settings. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Data`: The data simulated in this section.
+- `Figures`: The figures showing the simulation results.
+- `Results`: The results of simulations.
 
-## Tutorial
+#### Group
+- `Code`: The `R` scripts for replication of the results in group-level spatio-temporal simulations. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Figures`: The figures showing the simulation results.
+- `Results`: The results of simulations.
+
+#### Supplementary
+Details are provided in the `README.md` file in corresponding folders.
+- `Detection`: Scripts for evaluating the detection performance of Sparse ICA. 
+- `Diff_Density`: Scripts for evaluating the performance of Sparse ICA under different densities.
+- `Number_of_PC`: Scripts for evaluating the performance of Sparse ICA and Fast ICA under different number of principal components. 
+- `nu_selection`: Scripts for making BIC plot of tuning parameter selection.
+
+
+## Sparse ICA Tutorial and Toy Example
 
 The `sparseICA()` is the main function of our Sparse ICA algorithm. It is implemented in both pure R and Rcpp.
 The `BIC_sparseICA()` selects the tuning parameter nu based on our proposed BIC-like criterion.     
