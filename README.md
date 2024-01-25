@@ -1,6 +1,6 @@
 # Sparse ICA - repository
 
-This repository contains the code for replication of the results in the paper "Sparse Independent Component Analysis with an Application to Cortical Surface fMRI Data in Autism". It also contains an R package implementing the Sparse ICA algorithm. Sparse ICA (Sparse Independent Component Analysis) is a novel ICA method that enables sparse estimation of independent source components.
+This repository contains the code for replication of the results in the paper "Sparse Independent Component Analysis with an Application to Cortical Surface fMRI Data in Autism". It also contains an R package implementing the Sparse ICA algorithm.
 
 ## Installation of Sparse ICA R package
 
@@ -34,10 +34,20 @@ In the future, you can install Sparse ICA from github with:
 ``` r
 library(devtools)
 install_github("xxx/SparseICA")
-# Load the package
-library(SparseICA)
 ```
 Please raise the issue on GitHub if something breaks.
+
+
+## Organization
+
+### Simulations
+The folder `Simulations` contains the code for the simulation studies in the paper. The code is organized as follows:
+#### Sim123
+- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject spatio-temporal simulations, under both sparse and non-sparse truth settings. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Data`: The data simulated in this section.
+- `Figures`: The figures showing the simulation results.
+- `Results`: The results of simulations.
+
 
 ## Tutorial
 
