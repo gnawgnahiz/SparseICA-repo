@@ -40,30 +40,41 @@ Please raise the issue on GitHub if something breaks.
 
 ## Organization
 
-### Simulations (Section 3 of the manuscript)
+### Simulations
 The folder `Simulations` contains the code for the simulation studies in the paper. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in corresponding folders. 
-#### Single-subject Spatio-temporal Simulation Design (Section 3.1.1, Supplementary Materials Section 4.1)
+
+#### Sim123   
+Single-subject Spatio-temporal Simulation Design (Section 3.1.1, Supplementary Materials Section 4.1)
 - `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject spatio-temporal simulations, under both sparse and non-sparse truth settings. 
 - `Data`: The data simulated in this section.
 - `Results`: The results of simulations.
 - `Figures`: The figures showing the simulation results.
 
-#### High-dimensional Simulation Design (Section 3.1.3, Supplementary Materials Section 4.2)
+#### HighDim
+High-dimensional Simulation Design (Section 3.1.3, Supplementary Materials Section 4.2)
 - `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject high-dimensional simulations, under both sparse and non-sparse truth settings. 
 - `Data`: The data simulated in this section.
 - `Results`: The results of simulations.
 - `Figures`: The figures showing the simulation results.
 
-#### Group Level Simulations (Section 3.2)
+#### Group
+Group Level Simulations (Section 3.2, Supplementary Materials Section 5)
 - `Code`: The `R` scripts for replication of the results in group-level spatio-temporal simulations. 
 - `Results`: The results of simulations.
 - `Figures`: The figures showing the simulation results.
 
-#### Supplementary Materials
-- `Impact of different signal densities on the performance of our Sparse ICA (Section 3)`
-- `Detection`: Scripts for evaluating the detection performance of Sparse ICA. 
-- `Number_of_PC`: Scripts for evaluating the performance of Sparse ICA and Fast ICA under different numbers of principal components. 
-- `nu_selection`: Scripts for making BIC plot of tuning parameter selection.
+#### Supplementary
+##### Diff_Density 
+Impact of different signal densities on the performance of our Sparse ICA (Supplementary Materials Section 3)
+
+##### Number_of_Components
+Supplementary Materials for choosing the number of components (Supplementary Materials Section 6)
+
+##### Detection
+Evaluation of the detection performance of our Sparse ICA (Supplementary Materials Section 4.1.2)
+
+##### nu_selection
+Tuning parameter selection plots (Supplementary Materials Section 7.5)
 
 ### Real-Data
 The folder `Real-Data` contains the code for the real data analysis in the paper. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in corresponding folders.
@@ -153,7 +164,6 @@ par(mfrow=c(1,3))
 image(matrix(-smat[,1],33))
 image(matrix(-smat[,2],33))
 image(matrix(-smat[,3],33))
-par(mfrow=c(1,1))
 ```
 <img src="fig/true123.png" width="1200" />
 
@@ -163,7 +173,6 @@ par(mfrow=c(3,1))
 plot(mmat[1,],type = "l",xlab = "Time",ylab = "")
 plot(mmat[2,],type = "l",xlab = "Time",ylab = "")
 plot(mmat[3,],type = "l",xlab = "Time",ylab = "")
-par(mfrow=c(1,1))
 ```
 <img src="fig/trueM.png" width="1200" />
 
@@ -173,7 +182,6 @@ par(mfrow=c(1,3))
 image(matrix(xmat[,12],33))
 image(matrix(xmat[,23],33))
 image(matrix(xmat[,35],33))
-par(mfrow=c(1,1))
 ```
 <img src="fig/xmat.png" width="1200" />
 
@@ -211,7 +219,6 @@ par(mfrow=c(1,3))
 image(matrix(-matched_res$S[,1],33,33))
 image(matrix(-matched_res$S[,2],33,33))
 image(matrix(-matched_res$S[,3],33,33))
-par(mfrow=c(1,1))
 ```
 <img src="fig/estS.png" width="1200" />
 
@@ -221,7 +228,6 @@ par(mfrow=c(3,1))
 plot(matched_res$M[1,],type = "l",xlab = "Time",ylab = "")
 plot(matched_res$M[2,],type = "l",xlab = "Time",ylab = "")
 plot(matched_res$M[3,],type = "l",xlab = "Time",ylab = "")
-par(mfrow=c(1,1))
 ```
 <img src="fig/estM.png" width="1200" />
 
