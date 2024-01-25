@@ -41,26 +41,25 @@ Please raise the issue on GitHub if something breaks.
 ## Organization
 
 ### Simulations
-The folder `Simulations` contains the code for the simulation studies in the paper. The code is organized as follows:
+The folder `Simulations` contains the code for the simulation studies in the paper. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in corresponding folders. 
 #### Sim123
-- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject spatio-temporal simulations, under both sparse and non-sparse truth settings. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject spatio-temporal simulations, under both sparse and non-sparse truth settings. 
 - `Data`: The data simulated in this section.
 - `Figures`: The figures showing the simulation results.
 - `Results`: The results of simulations.
 
 #### HighDim
-- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject high-dimensional simulations, under both sparse and non-sparse truth settings. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Code`: The `R` and `MATLAB` scripts for replication of the results in single-subject high-dimensional simulations, under both sparse and non-sparse truth settings. 
 - `Data`: The data simulated in this section.
 - `Figures`: The figures showing the simulation results.
 - `Results`: The results of simulations.
 
 #### Group
-- `Code`: The `R` scripts for replication of the results in group-level spatio-temporal simulations. Codes should be run in the order of the number in their file names. Details are provided in the `README.md` file in the folder.
+- `Code`: The `R` scripts for replication of the results in group-level spatio-temporal simulations. 
 - `Figures`: The figures showing the simulation results.
 - `Results`: The results of simulations.
 
 #### Supplementary
-Details are provided in the `README.md` file in corresponding folders.
 - `Detection`: Scripts for evaluating the detection performance of Sparse ICA. 
 - `Diff_Density`: Scripts for evaluating the performance of Sparse ICA under different densities.
 - `Number_of_PC`: Scripts for evaluating the performance of Sparse ICA and Fast ICA under different number of principal components. 
