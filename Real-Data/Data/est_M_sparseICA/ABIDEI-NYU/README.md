@@ -1,0 +1,1 @@
+JASA Reproducibility Materials Template
