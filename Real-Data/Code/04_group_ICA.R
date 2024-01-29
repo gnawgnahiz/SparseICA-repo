@@ -29,8 +29,8 @@ my_sparseICA_all$estS_sign=t(a$S)
 save(my_sparseICA_all,file="../Results/group_sparseICA.RData")
 
 cifti_image=read_cifti("../Data/cifti_template.dtseries.nii",brainstructures = "all")
-cifti_image$data$cortex_left=my_sparseICA_all1$estS_sign[1:29696,]
-cifti_image$data$cortex_right=my_sparseICA_all1$estS_sign[29697:59412,]
+cifti_image$data$cortex_left=my_sparseICA_all$estS_sign[1:29696,]
+cifti_image$data$cortex_right=my_sparseICA_all$estS_sign[29697:59412,]
 cifti_image$data$subcort=matrix(0,nrow = 31870,ncol = 30)
 write_cifti(cifti_image,"../Results/group_sparseICA")
 
@@ -44,8 +44,8 @@ my_fastICA$estS_sign=matchICA(my_fastICA$S,my_sparseICA_all$estS_sign)
 save(my_fastICA,file="../Results/group_fastICA.RData")
 
 cifti_image=read_cifti("../Data/cifti_template.dtseries.nii",brainstructures = "all")
-cifti_image$data$cortex_left=my_fastICA2$estS_sign[1:29696,]
-cifti_image$data$cortex_right=my_fastICA2$estS_sign[29697:59412,]
+cifti_image$data$cortex_left=my_fastICA$estS_sign[1:29696,]
+cifti_image$data$cortex_right=my_fastICA$estS_sign[29697:59412,]
 cifti_image$data$subcort=matrix(0,nrow = 31870,ncol = 30)
 write_cifti(cifti_image,"../Results/group_fastICA")
 

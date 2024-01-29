@@ -11,7 +11,7 @@ ciftiTools.setOption('wb_path', '/usr/local/workbench')
 library(irlba)
 
 # Read the list of participants who passed QC procedure
-subj_list = read.csv("../Data/ICA_subjlist_combine.csv")
+subj_list = read.csv("../Data/ICA_subjlist_usable.csv")
 table(subj_list$SITE_ID)
 
 # Perform subject-level PCA on ABIDEI-KKI subjects
@@ -55,7 +55,7 @@ for (i in 1:dim(my_list)[1]) {
   # cifti_image$data$subcort=PC30[59413:91282,]
 
   #write_cifti(cifti_image,paste0("/home/zwan873/group_ICA/sub_PC/ABIDEI/",file_list$V1[i],"_PC30"))
-  save(PC,file=paste0("/home/zwan873/Real_Data_Application/sub_PC/ABIDEI-KKI/",my_list$SUB_ID[i],"_PC",npc,"_cortex_9p_iter.RData"))
+  save(PC,file=paste0("/home/zwan873/Real-Data/sub_PC/ABIDEI-KKI/",my_list$SUB_ID[i],"_PC",npc,"_cortex_9p_iter.RData"))
   
   cat(my_list$SUB_ID[i]," finished!\n")
 }

@@ -10,11 +10,11 @@ library(oro.nifti)
 library(neurobase)
 library(ciftiTools)
 ciftiTools.setOption('wb_path', '/usr/local/workbench')
-source("../../Simulations/00_utils.R")
+source("00_utils.R")
 
 load("../Results/group_sparseICA.RData")
 
-subj_list = read.csv("../Data/ICA_subjlist_combine.csv")
+subj_list = read.csv("../Data/ICA_subjlist_usable.csv")
 table(subj_list$SITE_ID)
 
 
@@ -44,7 +44,7 @@ for (i in 1:dim(my_list)[1]) {
   
   my_M = est.M.ols(my_sparseICA_all$estS_sign,dat_all)
   
-  save(my_M,file=paste0("/home/zwan873/Real_Data_Application/est_M_sparseICA/ABIDEII-NYU_1/",my_list$SUB_ID[i],"_estM_subPC85.RData"))
+  save(my_M,file=paste0("/home/zwan873/Real-Data/Data/est_M_sparseICA/ABIDEII-NYU_1/",my_list$SUB_ID[i],"_estM_subPC85.RData"))
   
   cat(my_list$SUB_ID[i]," finished!\n")
 }

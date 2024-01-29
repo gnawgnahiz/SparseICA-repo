@@ -6,52 +6,42 @@
 
 rm(list = ls())
 
-local=FALSE
-# Change this for cluster or local:
+setwd('/home/zwan873/Real-Data')
+save.input.data = FALSE
+options(mc.cores=1)
+seed = seedID
 
-if(local){
-  setwd('D:/Files/Real_Data_Application/Deconfound')
-  save.input.data = FALSE
-  getOption("mc.cores")
-  options(mc.cores=8)
-  seed=1
-} else {
-  setwd('/home/zwan873/Real_Data_Application/Deconfound')
-  save.input.data = FALSE
-  options(mc.cores=1)
-  seed = seedID
-}
-.libPaths('/home/zwan873/R/x86_64-redhat-linux-gnu-library/4.1')
+# .libPaths('/home/zwan873/R/x86_64-redhat-linux-gnu-library/4.1')
 .libPaths()
 
-getOption("mc.cores")
-set.seed(seed, "L'Ecuyer-CMRG")
+#getOption("mc.cores")
+set.seed(seed)
 
 tic = proc.time()
-library(drtmle)
+#library(drtmle)
 library(SuperLearner)
-library(earth)
-library(quadprog)
-library(gam)
-library(nloptr)
-library(future)
-library(future.apply)
-library(xgboost)
-library(ranger)
-library(visdat)
-library(ggplot2)
-library(gridExtra)
-#library(tidyr)
-library(e1071)
-library(glmnet)
-library(readxl)
+# library(earth)
+# library(quadprog)
+# library(gam)
+# library(nloptr)
+# library(future)
+# library(future.apply)
+# library(xgboost)
+# library(ranger)
+# library(visdat)
+# library(ggplot2)
+# library(gridExtra)
+# #library(tidyr)
+# library(e1071)
+# library(glmnet)
+# library(readxl)
 library(ROCit)
 
 ####################################################
 # Deconfounded group difference - AIPWE
 ####################################################
 
-load("../Data/dat_for_deconfound_fastICA.RData")
+load("/home/zwan873/Real-Data/Data/dat_for_deconfound_fastICA.RData")
 
 ####################################################
 # fit propensity model
@@ -66,48 +56,51 @@ gn.xmat = data.frame(model.matrix(delta~.,data=temp.data))[,-1]
 
 # fit with super learner
 my.SL.libs.gn = c("SL.earth","SL.glmnet","SL.gam","SL.glm","SL.ranger","SL.step","SL.step.interaction","SL.xgboost","SL.mean")
-gn.est=mcSuperLearner(Y = dat_all$delta, X = gn.xmat, family=binomial(),SL.library = my.SL.libs.gn, cvControl = list(V = 10), method='method.CC_nloglik')
+gn.est=SuperLearner(Y = dat_all$delta, X = gn.xmat, family=binomial(),SL.library = my.SL.libs.gn, cvControl = list(V = 10), method='method.NNLS')
 
-gn.est.predict = as.vector(gn.est$SL.predict)
+gn.est.predict = predict(gn.est, newdata = gn.xmat)$pred
+
 summary(rocit(score=gn.est.predict,class=dat_all$delta,method='nonparametric'))
 
-save(gn.est.predict,file=paste0("../Data/deconfound__fastICA/propensity_model/gn_est_predict_",seed,".RData"))
+save(gn.est.predict,file=paste0("/home/zwan873/Real-Data/Data/deconfound_fastICA/propensity_model/gn_est_predict_",seed,".RData"))
 
 ####################################################
 # fit outcome model
 ####################################################
 
-Qn.variables=c("delta","SEX","AGE_AT_SCAN","FIQ","HANDEDNESS_LR",
+Qn.variables=c("SEX","AGE_AT_SCAN","FIQ","HANDEDNESS_LR",
                "DX_GROUP","Stimulant","NonStimulant","ADOS_combine")
 
 # extract design matrix for outcome model fitting
 temp.data = dat_used[Qn.variables]
-Qn.xmat.fit = data.frame(model.matrix(delta~.,data=temp.data))[,-1]
+Qn.xmat.fit = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
 
 # design matrix for outcome prediction
 temp.data = dat_all[Qn.variables]
-Qn.xmat.predict = data.frame(model.matrix(delta~.,data=temp.data))[,-1]
+Qn.xmat = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
 
 # Separate ASD and TD datasets are necessary to obtain the DRTMLE estimates:
-temp.data = Qn.xmat.predict[Qn.xmat.predict$DX_GROUP==1,]
-Qn.xmat.predict.asd = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data)[,-1])
+temp.data = Qn.xmat[Qn.xmat$DX_GROUP==1,]
+Qn.xmat.asd = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data)[,-1])
 
-temp.data = Qn.xmat.predict[Qn.xmat.predict$DX_GROUP==2,]
-Qn.xmat.predict.td = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
+temp.data = Qn.xmat[Qn.xmat$DX_GROUP==2,]
+Qn.xmat.td = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
 
-my.SL.libs.Qbar= c("SL.earth","SL.glmnet","SL.gam","SL.glm","SL.ranger","SL.ridge","SL.step","SL.step.interaction","SL.svm","SL.xgboost","SL.mean")
+my.SL.libs.Qbar= c("SL.earth","SL.glmnet","SL.gam","SL.glm","SL.ranger","SL.ridge",
+                   "SL.step","SL.step.interaction","SL.svm","SL.xgboost","SL.mean")
 
 # fit outcome model for each edge
 Qbar.SL.asd_mat = matrix(nrow = 435,ncol = 144)
 Qbar.SL.td_mat = matrix(nrow = 435,ncol = 252)
 for (i in 1:435) {
-  outcome.SL = mcSuperLearner(Y = dat_used[,13+i],X=Qn.xmat.fit,family=gaussian(), SL.library = my.SL.libs.Qbar,cvControl = list(V = 10), method = drtmle:::tmp_method.CC_LS)
-  Qbar.SL.asd_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.predict.asd)[[1]]
-  Qbar.SL.td_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.predict.td)[[1]]
+  outcome.SL = SuperLearner(Y = dat_used[,13+i],X=Qn.xmat.fit,family=gaussian(), SL.library = my.SL.libs.Qbar,
+                              cvControl = list(V = 10), method = "method.NNLS")
+  Qbar.SL.asd_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.asd)$pred
+  Qbar.SL.td_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.td)$pred
   cat(i," th edge finished!\n")
 }
 
-save(Qbar.SL.asd_mat,Qbar.SL.td_mat,file=paste0("../Data/deconfound_fastICA/outcome_model/outcome_predict_",seed,".RData"))
+save(Qbar.SL.asd_mat,Qbar.SL.td_mat,file=paste0("/home/zwan873/Real-Data/Data/deconfound_fastICA/outcome_model/outcome_predict_",seed,".RData"))
 
 ####################################################
 # Final AIPWE estimation
@@ -133,8 +126,14 @@ for (i in 1:435) {
   Qbar.SL.asd = Qbar.SL.asd_mat[i,]
   Qbar.SL.td = Qbar.SL.td_mat[i,]
   
-  mean_fconn_asd <- AIPTW(Y = dat_all[,my_col][which(dat_all$DX_GROUP==1)],Delta = dat_all$delta[which(dat_all$DX_GROUP==1)],Qn = Qbar.SL.asd,gn = gn.est.predict[which(dat_all$DX_GROUP==1)])
-  mean_fconn_td <- AIPTW(Y = dat_all[,my_col][which(dat_all$DX_GROUP==2)],Delta = dat_all$delta[which(dat_all$DX_GROUP==2)],Qn = Qbar.SL.asd,gn = gn.est.predict[which(dat_all$DX_GROUP==2)])
+  mean_fconn_asd = AIPTW(Y = dat_all[,my_col][which(dat_all$DX_GROUP==1)],
+                         Delta = dat_all$delta[which(dat_all$DX_GROUP==1)],
+                         Qn = Qbar.SL.asd,
+                         gn = gn.est.predict[which(dat_all$DX_GROUP==1)])
+  mean_fconn_td = AIPTW(Y = dat_all[,my_col][which(dat_all$DX_GROUP==2)],
+                        Delta = dat_all$delta[which(dat_all$DX_GROUP==2)],
+                        Qn = Qbar.SL.td,
+                        gn = gn.est.predict[which(dat_all$DX_GROUP==2)])
     
   diff=mean_fconn_asd$mean-mean_fconn_td$mean
   se.diff=sqrt(mean_fconn_asd$var+mean_fconn_td$var)
@@ -142,12 +141,12 @@ for (i in 1:435) {
     
   z_p = 2*pnorm(abs(z.diff),lower.tail = F)
     
-  z_aiptw_stat[i,]=c(mean_fconn_asd$mean,mean_fconn_td$mean,z.diff,z_p,diff,se.diff)
+  z_aiptw_stat[i,]=c(mean_fconn_asd$mean,mean_fconn_td$mean,diff,se.diff,z.diff,z_p)
     
   cat(i,"th AIPWE connectivity finished!\n")
   
 }
 
-save(z_aiptw_stat,file = paste0("../Data/deconfound_fastICA/AIPWE/AIPWE_ASD_TD_z_stat_",seed,".RData"))
+save(z_aiptw_stat,file = paste0("/home/zwan873/Real-Data/Data/deconfound_fastICA/AIPWE/AIPWE_ASD_TD_z_stat_",seed,".RData"))
 
 proc.time()-tic

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/zwan873/Real-Data/Data/deconfound_sparseICA
+cd /home/zwan873/Real-Data/Data/deconfound_fastICA
 
 #mkdir -p ./LOGS # create directory to save results or output
 #mkdir -p ./result
@@ -9,8 +9,8 @@ submit_mark=1   # counter, count the index of the nodes
 
         for a in $(seq 1 400); do   # index for the submitted
 
-                    sed -e s:seedID:"${a}":g </home/zwan873/Real-Data/Code/07_deconfounded_singleseed.R >/home/zwan873/Real-Data/Data/deconfound_sparseICA/bash_outputs/deconfounded_singleseed${a}.R
-                    sed -e s:seedID:"${a}":g </home/zwan873/Real-Data/Code/07_deconfound_singleseed.sh >/home/zwan873/Real-Data/Data/deconfound_sparseICA/bash_outputs/deconfound_singleseed${a}.sh
+                    sed -e s:seedID:"${a}":g </home/zwan873/Real-Data/Code/11_deconfounded_singleseed_fastICA.R >/home/zwan873/Real-Data/Data/deconfound_fastICA/bash_outputs/deconfounded_singleseed_fastICA${a}.R
+                    sed -e s:seedID:"${a}":g </home/zwan873/Real-Data/Code/11_deconfound_singleseed_fastICA.sh >/home/zwan873/Real-Data/Data/deconfound_fastICA/bash_outputs/deconfound_singleseed_fastICA${a}.sh
 
         
                     # set the limit for the total number of jobs sumitted by YOUR_NAME
@@ -22,7 +22,7 @@ submit_mark=1   # counter, count the index of the nodes
                     
                     
                     
-                    if [ ! -e /home/zwan873/Real-Data/Data/deconfound_sparseICA/AIPWE/AIPWE_ASD_TD_z_stat_"$a".RData ]; then    # check to see if there is already an output or result
+                    if [ ! -e /home/zwan873/Real-Data/Data/deconfound_fastICA/AIPWE/AIPWE_ASD_TD_z_stat_"$a".RData ]; then    # check to see if there is already an output or result
 
                     while [ $submit_mark -gt 0 ]; do
 
@@ -36,7 +36,7 @@ submit_mark=1   # counter, count the index of the nodes
                             # if you want to skip node5, just change node5 to node6 or something else. it is ok if two blocks are sumitting to the same node
                             # you can use "nohup ./run_job.sh &" to let it run in the background, but there is a risk if your jobs are not arranged properly.
                             # if you are absolutely sure, the job arrangement or setup is correct, you can go ahead and use nohup command.
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node3.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node3.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=2
                             # sleep 15 seconds to make sure the submission is complete before submitting the next job, sometimes the cluster is busy, it might take longer to complete the submission, then you need to increase the waiting time accordingly
                             sleep 15
@@ -50,7 +50,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node4 | wc -l` #190G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 2 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node4.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node4.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=3
                             sleep 15
                             break
@@ -61,7 +61,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node5 | wc -l` #190G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 3 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node5.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node5.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=4
                             sleep 15
                             break
@@ -72,7 +72,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node6 | wc -l` #190G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 4 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node6.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node6.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=5
                             sleep 15
                             break
@@ -83,7 +83,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node7 | wc -l` #120G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 5 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node7.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node7.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=6
                             sleep 15
                             break
@@ -95,7 +95,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node19 | wc -l`  #120G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 8 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node19.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node19.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=7
                             sleep 15
                             break
@@ -107,7 +107,7 @@ submit_mark=1   # counter, count the index of the nodes
 
                         job_num=`qstat -u zwan873 | grep node20 | wc -l`  #120G
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 9 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node20.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node20.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=8
                             sleep 15
                             break
@@ -120,7 +120,7 @@ submit_mark=1   # counter, count the index of the nodes
                         # in the last block, you need to reset submit_mark to 1, so that the submission process could restart from node4 at the beginning
                         job_num=`qstat -u zwan873 | grep node21 | wc -l`  #120G 40CPU
                         if [[ $job_num -lt 5 ]] && [[ $submit_mark -eq 13 ]]; then
-                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node21.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_"$a" ./bash_outputs/deconfound_singleseed${a}.sh
+                            qsub  -R y -N seed${a} -w n -pe smp 1 -cwd -l h=node21.cluster -l mem_free=10G -l h_vmem=10G -j y -o ./bash_outputs/log_fastICA_"$a" ./bash_outputs/deconfound_singleseed_fastICA${a}.sh
                             submit_mark=1
                             sleep 15
                             break

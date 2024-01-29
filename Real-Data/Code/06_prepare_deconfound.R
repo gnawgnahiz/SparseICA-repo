@@ -6,8 +6,14 @@
 
 rm(list = ls())
 
-my_list = read.csv("../Data/ICA_subjlist_combine.csv")
+load("../Data/abide_pheno.RData")
+
+my_list2 = read.csv("../Data/ICA_subjlist_usable.csv")
+table(my_list2$DX_GROUP)
+
+my_list = abide_pheno[which(abide_pheno$SUB_ID%in%my_list2$SUB_ID),]
 table(my_list$DX_GROUP)
+my_list$SITE_ID[which(my_list$SITE_ID=="ABIDEII-KKI_1")] = "ABIDEII-KKI"
 
 # create functional connectivity matrix
 cor_all=array(dim = c(30,30,312))
@@ -98,12 +104,12 @@ save(Y_harmonized, file = "../Data/Y_harmonized_sparseICA.RData")
 ####################################################
 # adjusted residuals
 ####################################################
-
-covariates_adj = my_list[,c(1,10,12,14,16,17,18,24,25,33,34,35)]
+covariates_adj = my_list[,c("SUB_ID","Mean_FD","Propfd02","PropRMSD025","SEX","AGE_AT_SCAN","FIQ","HANDEDNESS_LR","DX_GROUP",    
+                            "Stimulant","NonStimulant","ADOS_combine")]
 
 # center covariates
 covariates_adj$Mean_FD=as.vector(scale(covariates_adj$Mean_FD,scale = F))
-covariates_adj$SEX[which(covariates_adj$SEX==2)]=-1
+covariates_adj$SEX=relevel(as.factor(covariates_adj$SEX),ref = "2")
 covariates_adj$AGE_AT_SCAN=as.vector(scale(covariates_adj$AGE_AT_SCAN,scale = F))
 covariates_adj$FIQ=as.vector(scale(covariates_adj$FIQ,scale = F))
 covariates_adj$Propfd02=as.vector(scale(covariates_adj$Propfd02,scale = F))
@@ -217,22 +223,20 @@ corrplot(full_cor,method = "color",tl.col="black",is.corr = F,p.mat = full_cor_p
 # Prepare data for de-biased (deconfounded) group difference - DRTMLE/AIPWE
 ####################################################
 
-library(SuperLearner)
-library(drtmle)
-
 # clean data
-dat_used = my_list[,c(1,10,12,14,16,17,18,24,25,33,34,35)]
+dat_used = my_list[,c("SUB_ID","Mean_FD","Propfd02","PropRMSD025","SEX","AGE_AT_SCAN","FIQ","HANDEDNESS_LR","DX_GROUP",    
+                      "Stimulant","NonStimulant","ADOS_combine")]
 dat_used$delta = 1
 dat_used[,14:448] = t(res_adj)
 
-load("../Data/abide_Y_9p_all_419.Rda")
-abide$cor_mat=NULL
+load("../Data/abide_pheno.RData")
 
 # 396 subjects in total
 
 # 396-312 = 84 unused data
-dat_unused = abide[-which(abide$SUB_ID%in%dat_used$SUB_ID),]
-dat_unused = dat_unused[,c(1,10,12,14,16,17,18,24,25,33,34,35)]
+dat_unused = abide_pheno[-which(abide_pheno$SUB_ID%in%dat_used$SUB_ID),]
+dat_unused = dat_unused[,c("SUB_ID","Mean_FD","Propfd02","PropRMSD025","SEX","AGE_AT_SCAN","FIQ","HANDEDNESS_LR","DX_GROUP",    
+                           "Stimulant","NonStimulant","ADOS_combine")]
 dat_unused$delta = 0
 dat_unused[,14:448]=NA
 

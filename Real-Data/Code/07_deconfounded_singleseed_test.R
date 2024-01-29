@@ -9,7 +9,7 @@ rm(list = ls())
 setwd('/home/zwan873/Real-Data')
 save.input.data = FALSE
 options(mc.cores=1)
-seed = seedID
+seed = 1
 
 # .libPaths('/home/zwan873/R/x86_64-redhat-linux-gnu-library/4.1')
 .libPaths()
@@ -41,7 +41,19 @@ library(ROCit)
 # Deconfounded group difference - AIPWE
 ####################################################
 
-load("/home/zwan873/Real-Data/Data/dat_for_deconfound_sparseICA.RData")
+load("../Data/dat_for_deconfound_sparseICA.RData")
+
+dat_all$SEX=relevel(as.factor(dat_all$SEX),ref = "2")
+dat_all$HANDEDNESS_LR=relevel(as.factor(dat_all$HANDEDNESS_LR),ref = "R")
+dat_all$DX_GROUP=relevel(as.factor(dat_all$DX_GROUP),ref = "2")
+
+dat_used$SEX=relevel(as.factor(dat_used$SEX),ref = "2")
+dat_used$HANDEDNESS_LR=relevel(as.factor(dat_used$HANDEDNESS_LR),ref = "R")
+dat_used$DX_GROUP=relevel(as.factor(dat_used$DX_GROUP),ref = "2")
+
+dat_unused$SEX=relevel(as.factor(dat_unused$SEX),ref = "2")
+dat_unused$HANDEDNESS_LR=relevel(as.factor(dat_unused$HANDEDNESS_LR),ref = "R")
+dat_unused$DX_GROUP=relevel(as.factor(dat_unused$DX_GROUP),ref = "2")
 
 ####################################################
 # fit propensity model
@@ -62,7 +74,7 @@ gn.est.predict = predict(gn.est, newdata = gn.xmat)$pred
 
 summary(rocit(score=gn.est.predict,class=dat_all$delta,method='nonparametric'))
 
-save(gn.est.predict,file=paste0("/home/zwan873/Real-Data/Data/deconfound_sparseICA/propensity_model/gn_est_predict_",seed,".RData"))
+#save(gn.est.predict,file=paste0("/home/zwan873/Real-Data/Data/deconfound_sparseICA/propensity_model/gn_est_predict_",seed,".RData"))
 
 ####################################################
 # fit outcome model
@@ -79,28 +91,28 @@ Qn.xmat.fit = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data)
 temp.data = dat_all[Qn.variables]
 Qn.xmat = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
 
-# Separate ASD and TD datasets are necessary to obtain the DRTMLE estimates:
+# Separate ASD and TD datasets are necessary to obtain the estimates:
 temp.data = Qn.xmat[Qn.xmat$DX_GROUP==1,]
 Qn.xmat.asd = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data)[,-1])
 
-temp.data = Qn.xmat[Qn.xmat$DX_GROUP==2,]
+temp.data = Qn.xmat[Qn.xmat$DX_GROUP==0,]
 Qn.xmat.td = data.frame(model.matrix(numeric(nrow(temp.data))~.,data=temp.data))[,-1]
 
-my.SL.libs.Qbar= c("SL.earth","SL.glmnet","SL.gam","SL.glm","SL.ranger","SL.ridge",
-                   "SL.step","SL.step.interaction","SL.svm","SL.xgboost","SL.mean")
+my.SL.libs.Qbar= c("SL.earth","SL.glmnet","SL.gam","SL.glm","SL.ranger","SL.ridge","SL.step",
+                   "SL.step.interaction","SL.svm","SL.xgboost","SL.mean")
 
 # fit outcome model for each edge
 Qbar.SL.asd_mat = matrix(nrow = 435,ncol = 144)
 Qbar.SL.td_mat = matrix(nrow = 435,ncol = 252)
 for (i in 1:435) {
   outcome.SL = SuperLearner(Y = dat_used[,13+i],X=Qn.xmat.fit,family=gaussian(), SL.library = my.SL.libs.Qbar,
-                              cvControl = list(V = 10), method = "method.NNLS")
+                              cvControl = list(V = 10), method = method.NNLS)
   Qbar.SL.asd_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.asd)$pred
   Qbar.SL.td_mat[i,] = predict(outcome.SL, newdata = Qn.xmat.td)$pred
   cat(i," th edge finished!\n")
 }
 
-save(Qbar.SL.asd_mat,Qbar.SL.td_mat,file=paste0("/home/zwan873/Real-Data/Data/deconfound_sparseICA/outcome_model/outcome_predict_",seed,".RData"))
+#save(Qbar.SL.asd_mat,Qbar.SL.td_mat,file=paste0("/home/zwan873/Real-Data/Data/deconfound_sparseICA/outcome_model/outcome_predict_",seed,".RData"))
 
 ####################################################
 # Final AIPWE estimation
@@ -120,7 +132,7 @@ AIPTW <- function(Y,Delta,Qn,gn){ #Y has NA when \delta = 0.
 }
 
 z_aiptw_stat = matrix(nrow = 435,ncol = 6)
-for (i in 1:435) {
+for (i in 1:2) {
   my_col = i+13
   
   Qbar.SL.asd = Qbar.SL.asd_mat[i,]

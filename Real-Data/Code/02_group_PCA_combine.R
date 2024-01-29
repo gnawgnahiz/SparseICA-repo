@@ -9,11 +9,11 @@ rm(list = ls())
 library(ciftiTools)
 ciftiTools.setOption('wb_path', '/usr/local/workbench')
 library(irlba)
-source("../../Simulations/00_utils.R")
+source("00_utils.R")
 
-subj_list = read.csv("../Data/ICA_subjlist_combine.csv")
+subj_list = read.csv("../Data/ICA_subjlist_usable.csv")
 
-setwd("/home/zwan873/Real_Data_Application/sub_PC")
+setwd("/home/zwan873/Real-Data/sub_PC")
 
 study_list = c("ABIDEI-KKI","ABIDEI-NYU","ABIDEII-KKI","ABIDEII-NYU_1")
 
@@ -41,5 +41,5 @@ cat("The whole data matrix is generated! The dimension is ",dim(dat_whole),"\n")
 temp = whitener(X = dat_whole,n.comp = 30,irlba=T)
 PC30 = temp$Z
 
-save(PC30,file=paste0("/home/zwan873/Real_Data_Application/sub_PC/PC30_subPC",npc,".RData"))
+save(PC30,file=paste0("/home/zwan873/Real-Data/sub_PC/PC30_subPC",npc,".RData"))
 

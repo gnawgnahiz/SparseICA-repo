@@ -15,7 +15,7 @@ library(ciftiTools)
 ciftiTools.setOption('wb_path', '/Applications/workbench') 
 # ciftiTools.setOption('wb_path', 'C:/Software/Workbench/workbench-windows64-v1.5.0/workbench') 
 # ciftiTools.setOption('wb_path', 'D:/Softwares/workbench/workbench')
-source("../../Simulations/00_utils.R")
+source("00_utils.R")
 
 load("../Data/PC30_subPC85.RData")
 cat("PC30 loaded!\n")
