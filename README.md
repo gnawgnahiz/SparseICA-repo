@@ -29,7 +29,7 @@ For the purpose of replication of the results in the paper, you can download the
 install.packages("SparseICA_0.1.0.tar.gz")
 ```
 
-In the future, you can install Sparse ICA from github with:
+You can also install Sparse ICA from github with:
 
 ``` r
 library(devtools)
@@ -94,7 +94,7 @@ The `BIC_sparseICA()` selects the tuning parameter nu based on our proposed BIC-
 ```
 sparseICA(xData,n.comp,nu = 1,U.list=NULL,whiten = c('eigenvec','sqrtprec','lngca','none'), orth.method=c('svd','givens'), method = c("C","R"), restarts = 40, lambda = sqrt(2)/2, irlba = FALSE, eps = 1e-06, maxit = 500, verbose=TRUE, converge_plot = FALSE,col.stand=TRUE, row.stand=FALSE, iter.stand=0)
 ```
-- `xData`: Input data matrix with dimension P x T. P is the number of features. t is the number of samples.
+- `xData`: Input data matrix with dimension P x T. P is the number of features. T is the number of samples.
 - `n.comp`: The number of components.
 - `nu`: the tuning parameter controlling the accuracy and sparsity of the results. Should be selected by the BIC-like criterion "BIC_sparseICA_R()" or expert knowledge. The default is 1.
 - `U.list`: The initialization of U matrix. Default is "NULL".
