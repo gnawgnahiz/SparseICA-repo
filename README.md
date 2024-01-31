@@ -116,7 +116,7 @@ sparseICA(xData,n.comp,nu = 1,U.list=NULL,whiten = c('eigenvec','sqrtprec','lngc
 ```
 BIC_sparseICA(xData,n.comp,nu_list = seq(0.1,4,0.1),U.list=NULL,whiten = c('eigenvec','sqrtprec','lngca,'none'), orth.method=c('svd','givens'), method = c("C","R"), restarts = 40, lambda = sqrt(2)/2, irlba = FALSE, eps = 1e-06, maxit = 500, verbose=TRUE,col.stand=TRUE, row.stand=FALSE, iter.stand=0, BIC_plot = FALSE)
 ```
-- `xData` Input data matrix with dimension P x T. P is the number of features. t is the number of samples.
+- `xData` Input data matrix with dimension P x T. P is the number of features. T is the number of samples.
 - `n.comp` The number of components.
 - `nu_list` the list of candidate tuning parameter. Default is seq(0.1,4,0.1).
 - `U.list` The initialization of U matrix. Default is "NULL".
