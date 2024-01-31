@@ -1,6 +1,6 @@
 ###################################################################
 # R codes for real data application
-# 07: Build propensity and outcome model, estimate de-biased group difference for a single seed
+# 11: Build propensity and outcome model, estimate de-biased group difference for a single seed, fastICA solution
 # Note: This script was run on the group cluster with other bash files
 ###################################################################
 

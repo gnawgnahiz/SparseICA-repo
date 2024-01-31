@@ -1,6 +1,6 @@
 ###################################################################
 # R codes for real data application
-# 05: Estimate mixing matrix for each subject in ABIDEII-KKI
+# 09: Estimate mixing matrix for each subject in ABIDEII-KKI, using fast ICA solution
 # Note: This script was run on the group cluster server.
 ###################################################################
 

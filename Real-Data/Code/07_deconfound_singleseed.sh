@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd /home/zwan873/Real-Data/Data/deconfound_sparseICA
+cd /home/zwan873/Real-Data/Data/deconfound_sparseICA/bash_outputs
 
-R --vanilla <bash_outputs/deconfounded_singleseedseedID.R 
+Rscript deconfound_singleseed_seedID.R 
 
 

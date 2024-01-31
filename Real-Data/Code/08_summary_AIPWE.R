@@ -13,36 +13,36 @@ library(corrplot)
 library(ppcor)
 
 # load DRTMLE and AIPTW data
-z_drtmle_stat_all = matrix(nrow = 435,ncol = 400)
 z_aiptw_stat_all = matrix(nrow = 435,ncol = 400)
 
 for (i in 1:400) {
   load(paste0("../Data/deconfound_sparseICA/AIPWE/AIPWE_ASD_TD_z_stat_",i,".RData"))
   
-  z_drtmle_stat_all[,i]=z_drtmle_stat[,3]
-  z_aiptw_stat_all[,i]=z_aiptw_stat[,3]
+  z_aiptw_stat_all[,i]=z_aiptw_stat[,5]
 }
+
+save(z_aiptw_stat_all,file = "../Results/AIPWE_ASD_TD_z_stat_all.RData")
 
 ###################################################################
 # make a plot about the relationship between naive and DRTMLE/AIPTW z stat
 ###################################################################
-load("../Data/naive_z_stat_sparseICA.RData")
+load("../Results/naive_z_stat_sparseICA.RData")
 
-dat_long = data.frame(x=numeric(174000),y1=numeric(174000),y2=numeric(174000))
+dat_long = data.frame(x=numeric(174000),y1=numeric(174000))
 my_x = c()
 for (i in 1:435) {
   temp_x = rep(z_stat[i,1],400)
   my_x = c(my_x,temp_x)
 }
 dat_long$x=my_x
-my_y2 = c()
+my_y1 = c()
 for (i in 1:435) {
-  my_y2 = c(my_y2,z_aiptw_stat_all[i,])
+  my_y1 = c(my_y1,z_aiptw_stat_all[i,])
 }
-dat_long$y2=my_y2
+dat_long$y1=my_y1
 
 pdf("../Figures/AIPWE_vs_naive_sparseICA.pdf",width = 10, height = 6)
-plot(dat_long$x,dat_long$y2,xlab = "Naive Z",ylab = "AIPWE Z",main = "AIPWE vs Naive")
+plot(dat_long$x,dat_long$y1,xlab = "Naive Z",ylab = "AIPWE Z",main = "AIPWE vs Naive")
 abline(a=0,b=1,col="red")
 dev.off()
 
@@ -129,7 +129,7 @@ pdf("../Figures/Naive_sparseICA.pdf",width = 7,height = 7)
 corrplot(full_cor,method = "color",tl.col="black",is.corr = F,p.mat = full_cor_p,insig = "label_sig",sig.level = 0.05)
 dev.off()
 
-save(z_stat,z_drtmle,z_aiptw,z_drtmle_stat_all,z_aiptw_stat_all,file = "../Results/deconfounded_results_sparseICA.RData")
+save(z_stat,z_aiptw,z_aiptw_stat_all,file = "../Results/deconfounded_results_sparseICA.RData")
 
 
 ###################################################################
@@ -138,24 +138,7 @@ save(z_stat,z_drtmle,z_aiptw,z_drtmle_stat_all,z_aiptw_stat_all,file = "../Resul
 
 library(ggplot2)
 
-# read outcome model
-out_asd=0
-out_td=0
-
-for (i in 1:400) {
-  load(paste0("../Data/deconfound_sparseICA/outcome_model/outcome_predict_",i,".RData"))
-  out_asd = out_asd + Qbar.SL.asd_mat[118,]
-  out_td = out_td + Qbar.SL.td_mat[118,]
-}
-out_asd = out_asd/400
-out_td = out_td/400
-
-dat_jitter = data.frame(group = c(rep("ASD",144),rep("TD",252)),z = c(out_asd,out_td))
-
-ggplot(dat_jitter,aes(group,z))+geom_jitter()
-
-plot(out_asd)
-
+load("../Results/naive_z_stat_sparseICA.RData")
 
 # load AIPWE data
 asd_aiptw_all = matrix(nrow = 435,ncol = 400)

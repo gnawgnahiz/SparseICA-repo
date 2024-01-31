@@ -49,7 +49,7 @@ for (i in 1:length(dist_list)) {
   for (j in 1:rep) {
     dat = jordan_simu(p=2,N=1024,dist = dist_list[i])
     
-    my_sparse = sparseICA_Rcpp(dat$x,n.comp = 2,nu=1,restarts.pbyd = 1)
+    my_sparse = sparseICA(dat$x,n.comp = 2,nu=1,restarts = 1)
     estM_sparse = est.M.ols(my_sparse$estS,dat$x)
     dat_sparse[i,j] =frobICA(M1=estM_sparse,M2=dat$m,standardize = T)
     
@@ -85,3 +85,27 @@ boxplot(dat_sparse[7,],dat_fast[7,],dat_info[7,],names=c("SparseICA","FastICA","
 boxplot(dat_sparse[8,],dat_fast[8,],dat_info[8,],names=c("SparseICA","FastICA","InfomaxICA"),ylab="PRMSE")
 par(mfrow=c(1,1))
 dev.off()
+
+# 
+# library(e1071)
+# a = rjordan("a",5000)
+# kurtosis(a)
+# b = rjordan("b",5000)
+# kurtosis(b)
+# d = rjordan("d",5000)
+# kurtosis(d)
+# e = rjordan("e",5000)
+# kurtosis(e)
+# 
+# c = rjordan("c",5000)
+# kurtosis(c)
+# f = rjordan("f",10000)
+# kurtosis(f)
+# k = rjordan("k",5000)
+# kurtosis(k)
+# n = rjordan("n",5000)
+# kurtosis(n)
+# 
+# kurtosis(a)
+# 
+# 
