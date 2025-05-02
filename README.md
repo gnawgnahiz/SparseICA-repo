@@ -4,7 +4,7 @@ This repository contains the code for replication of the results in the paper "S
 
 ## Installation of Sparse ICA R package
 
-We assume you are running R 4.1.0 or newer. There is no guarantee for backward or forward comparability. 
+We assume you are running R 4.1.0 or newer. There is no guarantee for backward or forward compatibility. 
 
 The following R packages are required:
 
@@ -33,7 +33,7 @@ You can also install Sparse ICA from github with:
 
 ``` r
 library(devtools)
-install_github("XXXX/SparseICA")
+install_github("gnawgnahiz/SparseICA-repo")
 ```
 Please raise the issue on GitHub if something breaks.
 
