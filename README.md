@@ -33,7 +33,7 @@ You can also install Sparse ICA from github with:
 
 ``` r
 library(devtools)
-install_github("gnawgnahiz/SparseICA-repo")
+install_github("thebrisklab/SparseICA")
 ```
 Please raise the issue on GitHub if something breaks.
 
