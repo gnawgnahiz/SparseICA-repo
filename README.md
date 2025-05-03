@@ -1,6 +1,6 @@
 # Sparse ICA - repository
 
-This repository contains the code for replication of the results in the paper "Sparse Independent Component Analysis with an Application to Cortical Surface fMRI Data in Autism". It also contains an static version of R package implementing the Sparse ICA algorithm, which can be used for reproducing the results in Sparse ICA paper. The most updated version of the R package can be found in https://github.com/thebrisklab/SparseICA. 
+This repository contains the code for replication of the results in the paper "Sparse Independent Component Analysis with an Application to Cortical Surface fMRI Data in Autism". It also contains a static version of the R package implementing the Sparse ICA algorithm, which can be used for reproducing the results in the Sparse ICA paper. The most updated version of the R package can be found in https://github.com/thebrisklab/SparseICA.
 
 ## Installation of Sparse ICA R package
 
